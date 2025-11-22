@@ -1,3 +1,19 @@
+/* --------------------------
+   App.css — cleaned & organised
+   -------------------------- */
+
+/* Color / sizing variables */
+:root{
+  --accent: #2563eb;         /* blue accent used in JS */
+  --accent-strong: #3b82f6;
+  --muted: #888888;
+  --danger: #b91c1c;
+  --success: #047857;
+  --card-padding: 2rem;
+  --radius: 10px;
+}
+
+/* Page layout */
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -5,38 +21,123 @@
   text-align: center;
 }
 
+/* Generic card */
+.card {
+  padding: var(--card-padding);
+  border-radius: calc(var(--radius) + 4px);
+  background: white;
+  box-shadow: 0 6px 24px rgba(15,23,42,0.04);
+  box-sizing: border-box;
+}
+
+/* small utility text */
+.read-the-docs {
+  color: var(--muted);
+}
+
+/* --------------------------
+   Logo
+   -------------------------- */
 .logo {
   height: 6em;
   padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+  will-change: filter, transform;
+  transition: filter 300ms, transform 300ms;
 }
+
+/* hover glow */
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
+/* own style for React logo variant */
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+/* subtle spin – respects prefers-reduced-motion */
 @keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
-
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
   }
 }
 
-.card {
-  padding: 2em;
+/* --------------------------
+   Product / catalog badges
+   -------------------------- */
+.product-discount-badge {
+  background: rgba(59,130,246,0.08);
+  color: var(--accent);
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  margin-left: 8px;
+  display: inline-block;
+  line-height: 1;
 }
 
-.read-the-docs {
-  color: #888;
+/* --------------------------
+   Chat area / system messages
+   -------------------------- */
+.chat-card .system {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 8px 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Order request visual style inside chat */
+.chat-card .order-request {
+  background: rgba(59,130,246,0.04);
+  border-radius: 10px;
+  padding: 12px;
+  box-sizing: border-box;
+  margin: 6px 0;
+}
+
+/* --------------------------
+   Accessibility / small tweaks
+   -------------------------- */
+input.input, textarea, .btn {
+  font-family: inherit;
+  font-size: 14px;
+}
+
+/* ensure consistent rounding & spacing for inputs/buttons */
+.input {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-sizing: border-box;
+}
+
+/* badges (general) */
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* success / danger helpers */
+.badge--success { background: rgba(16,185,129,0.08); color: var(--success); }
+.badge--danger  { background: rgba(248,113,113,0.08); color: var(--danger); }
+
+/* make small text muted consistently */
+.small { color: var(--muted); font-size: 13px; }
+
+/* responsive tweaks */
+@media (max-width: 820px) {
+  #root { padding: 1rem; }
+  .card { padding: 1rem; }
+  .logo { height: 4.5em; padding: 1rem; }
 }

@@ -1,69 +1,62 @@
 // src/mockApi.js
-// Simple in-memory mock API. All functions return Promises to mimic fetch.
+const sleep = (ms = 200) => new Promise((r) => setTimeout(r, ms));
 
-const sleep = (ms = 300) => new Promise((r) => setTimeout(r, ms));
+// In-memory storage (empty by default; can be prefilled for local testing)
+let linkRequests = [];
+let products = [];
 
-// Sample mock data
-let linkRequests = [
-  {
-    id: 1,
-    consumer_id: 101,
-    supplier_id: 201,
-    status: "pending",
-    created_at: new Date().toISOString(),
-    supplier_name: "AgroSupply LLP",
-    consumer_name: "Bakyt",
-  },
-  {
-    id: 2,
-    consumer_id: 102,
-    supplier_id: 201,
-    status: "accepted",
-    created_at: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
-    supplier_name: "AgroSupply LLP",
-    consumer_name: "Ainur",
-  },
-];
-
-let products = [
-  { id: 1, name: "Potatoes (bag)", price: "1200.00", quantity: 50, unit: "kg", supplier_id: 201 },
-  { id: 2, name: "Onions (bag)", price: "900.00", quantity: 30, unit: "kg", supplier_id: 201 },
-];
-
-// Exports: mimic API surface used by the app
+/**
+ * Returns a mock auth token object.
+ * Replace/remove this file when wiring real backend.
+ */
 export async function authToken(/* username, password */) {
-  await sleep(200);
+  await sleep();
   return {
     access_token: "mock-token-abc123",
     token_type: "bearer",
-    user_id: 201,
+    user_id: 0,
     role: "supplier_admin",
   };
 }
 
 export async function getSupplierLinks() {
-  await sleep(200);
-  // return a copy
+  await sleep();
   return JSON.parse(JSON.stringify(linkRequests));
 }
 
 export async function updateSupplierLink(id, { status }) {
-  await sleep(200);
+  await sleep();
   const idx = linkRequests.findIndex((l) => l.id === id);
   if (idx === -1) throw new Error("Not found");
-  linkRequests[idx].status = status;
+  linkRequests[idx] = { ...linkRequests[idx], status };
   return JSON.parse(JSON.stringify(linkRequests[idx]));
 }
 
 export async function getMyProducts() {
-  await sleep(200);
+  await sleep();
   return JSON.parse(JSON.stringify(products));
 }
 
 export async function createProduct(payload) {
-  await sleep(200);
+  await sleep();
   const id = products.length ? Math.max(...products.map((p) => p.id)) + 1 : 1;
   const item = { id, ...payload };
   products.push(item);
   return JSON.parse(JSON.stringify(item));
+}
+
+/**
+ * Utility helpers for tests/dev: populate initial demo data (optional)
+ */
+export function seedDemoData({ links = [], items = [] } = {}) {
+  linkRequests = JSON.parse(JSON.stringify(links));
+  products = JSON.parse(JSON.stringify(items));
+}
+
+/**
+ * Expose a reset helper (useful in unit tests)
+ */
+export function resetMockData() {
+  linkRequests = [];
+  products = [];
 }

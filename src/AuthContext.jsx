@@ -1,13 +1,4 @@
-// src/AuthContext.jsx
 import React, { createContext, useContext, useEffect, useState } from "react";
-
-// If using mock, import the mock auth function
-const useMock = typeof window !== "undefined" && window.__USE_MOCK;
-let mockAuth;
-if (useMock) {
-  // dynamic import to avoid errors when bundling production
-  mockAuth = require("./mockApi").authToken;
-}
 
 const AuthContext = createContext();
 
@@ -28,19 +19,13 @@ export function AuthProvider({ children }) {
   }, [token]);
 
   const login = async (username, password) => {
-    if (useMock && mockAuth) {
-      const data = await mockAuth(username, password);
-      setToken(data.access_token);
-      return data;
-    }
-    // Otherwise the app will perform real fetch in components
-    return null;
+    return null; // backend handles login in LoginPage
   };
 
   const logout = () => setToken(null);
 
   return (
-    <AuthContext.Provider value={{ token, setToken, logout, login }}>
+    <AuthContext.Provider value={{ token, setToken, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
